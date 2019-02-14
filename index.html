@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body style="text-align:center;background-image:linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%)">
+	<div>
+		<h2>Please Enter City Name To Display Nearby Restaurants</h2>
+		<input id="location" type="text" placeholder="City Name"/>
+		<button id="search" type="submit" onclick="myFunction()">Search</button>
+		<br/>
+		<table id= "userdata" border="2" style="display:none;" align="center">
+			<thead>
+				<th>Name</th>
+				<th>Cuisine Types</th>
+				<th>Rating</th>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+		<script>   
+			function myFunction(){
+				var userCity = document.getElementById("location").value;
+				document.getElementById("userdata").style.display="none";
+				$.getJSON('http://opentable.herokuapp.com/api/restaurants?city=toronto', function(data) {
+				$.each(data.restaurants, function(i, f) {
+					if(f.city.toLowerCase() == userCity.toLowerCase()){
+						document.getElementById("userdata").style.display="table";
+						var tblRow = "<tr>" + "<td>" + f.name + "</td>" +
+							"<td>" + f.address + "</td>" + "<td>" + f.price + "</td>" + "</tr>"
+							$(tblRow).appendTo("#userdata tbody");
+					}
+				 });
+				});
+			};
+		</script>
+	</div>
+</body>
+</html>
